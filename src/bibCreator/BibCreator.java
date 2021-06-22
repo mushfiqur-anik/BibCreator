@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class BibCreator {
 	// Attributes
@@ -118,12 +121,159 @@ public class BibCreator {
 		} 
 	} 
 	
-	// Process Files for validation
-	public static void processFilesForValidation() { 
-		// Check if All three files are valid 
-		
-		// Delete IEEE, ACM, & NJ of the corre
+	// ================================================================================================
+	// Attributes
+	private static String valueOfField;
+	private static int index = 0;
+	private static int count = 0;
+	private static String element = "";
+	private static String output;
+	private static Scanner myReader;
+	static Pattern pattern = Pattern.compile("\\{(.*?)\\}"); // Pattern I want to match
+	
+	// Match the passed pattern & return the String
+	private static String matchPattern(String str1, Pattern pattern) {
+		valueOfField = "";
+        Matcher m = pattern.matcher(str1);
+        
+        while(m.find()) {
+        	valueOfField = m.group(1);
+        }
+        return valueOfField;
+    }
+	
+	// Check if any field is invalid
+	public static void checkFieldForValidation() throws FileInvalidException { 
+	    setFieldValue();
+	    
+	    System.out.println(element);
+	    
+	    if(isFieldInvalid()) { 
+	    	// Delete ... 
+	    	System.err.println("DELETED ALL FILES");
+			throw new FileInvalidException("ERRRRROOOOOOOOOORRR");
+		}
+	    else { 
+	    	
+	    	// Write to file
+	    	//System.err.println(matchPattern(element, pattern));
+	    } 
 	}
+	
+	// getFieldValue
+	public static void setFieldValue() { 
+		element += output;
+		count++;
+		
+		// Check for the end of that particular keyword
+		while(!output.contains("}") && myReader.hasNext()) { 
+			output = myReader.nextLine();
+			element += output;
+		}
+	}
+	
+	// isFileValid()
+	public static boolean isFieldInvalid() { 
+		return (matchPattern(element, pattern).length() == 0);
+	}
+	
+	// deleteFile()
+	public static void deleteFile() { 
+		// ACM
+		// NJ
+		// IEEE
+	}
+	
+	// writeToFile()
+	public void writeToFiles() {
+		// ACM 
+		// NJ
+		// IEEE
+	}
+	
+	public static void processFilesForValidation() {
+		Article obj = new Article();
+
+		try { 
+			myReader = new Scanner(new FileReader("Latex5.bib"));
+			
+			while(myReader.hasNext()) {
+				output = myReader.nextLine();
+				
+				if(output.contains("author")) { 
+					checkFieldForValidation();
+					obj.setAuthor(valueOfField);
+				} 
+				else if(output.contains("journal")) {
+					checkFieldForValidation();
+					obj.setJournal(valueOfField);
+				} 
+				else if(output.contains("title")) {
+					checkFieldForValidation();
+					obj.setTitle(valueOfField);
+				}			
+				else if(output.contains("year")) {
+					checkFieldForValidation();
+					obj.setYear(valueOfField);
+				}			
+				else if(output.contains("volume")) {
+					checkFieldForValidation();
+					obj.setVolume(valueOfField);
+				}			
+				else if(output.contains("number")) {
+					checkFieldForValidation();
+					obj.setNumber(valueOfField);
+				}
+								
+				else if(output.contains("pages")) {
+					checkFieldForValidation();
+					obj.setPages(valueOfField);
+				}			
+				else if(output.contains("keywords")) {
+					checkFieldForValidation();
+					obj.setKeywords(valueOfField);
+				}			
+				else if(output.contains("doi")) {
+					checkFieldForValidation();
+					obj.setDoi(valueOfField);
+				}		
+				else if(output.contains("ISSN")) {
+					checkFieldForValidation();
+					obj.setISSN(valueOfField);
+				}			
+				else if(output.contains("month")) {
+					checkFieldForValidation();
+					obj.setMonth(valueOfField);
+				}
+							
+				if(count == 11) {
+					
+					System.err.println("---ARTICLE---");
+					count = 0;
+					//System.out.println(obj.toString());
+					System.err.println("---END OF ARTICLE---");
+					System.out.println("");
+				}
+				
+				element = "";
+			}
+			
+			myReader.close();
+		} 
+		
+		catch(FileInvalidException e) {
+			System.out.println("File is invalid bro!");
+		}
+		
+		// Catch and break here ...
+		catch(FileNotFoundException e) {
+			System.out.println("Error!!");
+		}
+		
+		System.out.println("DONNNNE!");
+	}
+	
+	// ================================================================================================
 	
 	public static void main(String[] args) {
 		initializeFileName(); // Initialize files
@@ -134,6 +284,9 @@ public class BibCreator {
 			System.out.println("Will create 30 files");
 			createOutputFiles();
 		}
+		
+		processFilesForValidation();
+		
 
 	}
 }

@@ -90,4 +90,16 @@ public class Article {
 	public void setMonth(String month) {
 		this.month = month;
 	}
+
+	@Override
+	public String toString() {
+		return "Article [author=" + author + ", journal=" + journal + ", title=" + title + ", year=" + year
+				+ ", number=" + number + ", volume=" + volume + ", pages=" + pages + ", keywords=" + keywords + ", doi="
+				+ doi + ", ISSN=" + ISSN + ", month=" + month + ", getAuthor()=" + getAuthor() + ", getJournal()="
+				+ getJournal() + ", getTitle()=" + getTitle() + ", getYear()=" + getYear() + ", getNumber()="
+				+ getNumber() + ", getVolume()=" + getVolume() + ", getPages()=" + getPages() + ", getKeywords()="
+				+ getKeywords() + ", getDoi()=" + getDoi() + ", getISSN()=" + getISSN() + ", getMonth()=" + getMonth()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
 }
